@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}System Screen{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>מסך מערכת</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">הוסף לקוח</button>
+    </form>
+    <hr>
+    <h3>לקוחות</h3>
+    <ul>
+        {% for customer in customers %}
+            <li>{{ customer.name }} - {{ customer.phone }}</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}
