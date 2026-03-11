@@ -138,3 +138,77 @@ python manage.py runserver
 ---
 
 © Hila · Django Telecom Management Project
+
+---
+
+## 🇮🇱 תיעוד בעברית
+
+### מה הפרויקט עושה
+
+אפליקציית ווב מבוססת Django לניהול לקוחות של חברת תקשורת (ISP). המערכת מאפשרת לכל משתמש רשום לנהל את רשימת הלקוחות שלו — להוסיף, לצפות ולמחוק — ולהירשם לחבילות מנוי בתשלום חודשי. הממשק כתוב בעברית מלאה עם תמיכה ב-RTL.
+
+**יכולות מרכזיות:**
+- ניהול לקוחות — הוספה, הצגה ומחיקה עם בדיקת בעלות
+- 3 חבילות מנוי מובנות: בסיסי (₪50), מתקדם (₪100), פרמיום (₪150)
+- מעקב מנויים עם תאריכי התחלה ותפוגה
+- לוח בקרה עם סטטיסטיקות בזמן אמת
+- מערכת אימות מלאה: הרשמה, התחברות, שינוי סיסמה ואיפוס סיסמה בטוקן
+
+### טכנולוגיות
+
+| שכבה | טכנולוגיה |
+|---|---|
+| שפת תכנות | Python |
+| מסגרת עבודה | Django |
+| מסד נתונים | SQLite (ברירת מחדל של Django) |
+| ממשק משתמש | Bootstrap 5 + Bootstrap Icons |
+| כיוון טקסט | RTL מלא (עברית) |
+| אבטחה | CSRF protection, ולידציית סיסמה, טוקן איפוס עם תפוגה של שעה |
+
+### הוראות התקנה והפעלה
+
+```bash
+# 1. שכפל את הריפוזיטורי
+git clone https://github.com/hilaln2210/communicationltd
+cd communicationltd
+
+# 2. צור סביבה וירטואלית והפעל אותה
+python3 -m venv venv
+source venv/bin/activate
+
+# 3. התקן תלויות
+pip install django
+
+# 4. הגדר מסד נתונים (כולל נתוני חבילות ראשוניות)
+python manage.py migrate
+
+# 5. (אופציונלי) צור משתמש מנהל
+python manage.py createsuperuser
+
+# 6. הפעל את השרת
+python manage.py runserver
+
+# פתח בדפדפן: http://localhost:8000
+```
+
+### מבנה הפרויקט
+
+```
+communication_ltd/        # הגדרות Django (settings, urls, wsgi)
+users/
+  ├── models.py           # מודלים: User, Customer, Package, Subscription
+  ├── views.py            # views: דף בית, ניהול לקוחות, חבילות, מנויים, אימות
+  ├── forms.py            # טפסים: CustomerForm, UserRegistrationForm ועוד
+  ├── urls.py             # כל נתיבי ה-URL של האפליקציה
+  ├── migrations/         # migrations כולל נתוני חבילות ראשוניות
+  └── templates/
+      ├── base.html             # תבנית בסיס עם navbar ו-footer
+      ├── home.html             # לוח בקרה / hero section למשתמש לא מחובר
+      └── users/
+          ├── system_screen.html    # טבלת לקוחות עם פעולות
+          ├── packages.html         # כרטיסי חבילות מנוי
+          ├── login.html
+          ├── register.html
+          └── ...
+manage.py
+```
