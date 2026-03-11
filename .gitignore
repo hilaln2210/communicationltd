@@ -1,20 +1,29 @@
 # Python
 __pycache__/
-*.py[cod]
+*.pyc
+*.pyo
+*.pyd
+.Python
 venv/
+venv_tmp/
 env/
+.venv/
 *.egg-info/
 
-# Database
-*.sqlite3
-*.db
+# Django
+db.sqlite3
+*.log
+media/
+staticfiles/
+
+# Env
+.env
+.env.*
+!.env.example
 
 # IDE
 .idea/
 .vscode/
-*.swp
-*.swo
 
-# OS
-.DS_Store
-Thumbs.db
+# Screenshots (keep!)
+!screenshots/
