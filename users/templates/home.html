@@ -1,11 +1,151 @@
 {% extends 'base.html' %}
-{% load static %}
 
-{% block title %}Home{% endblock %}
+{% block title %}בית — Communication LTD{% endblock %}
 
 {% block content %}
-<div class="container mt-4">
-    <h2>ברוך הבא</h2>
-    <p>זהו דף הבית שלך.</p>
+{% if user.is_authenticated %}
+<div class="row mb-4">
+    <div class="col">
+        <h2 class="mb-1">
+            <i class="bi bi-speedometer2 text-primary me-2"></i>לוח בקרה
+        </h2>
+        <p class="text-muted">שלום, <strong>{{ user.username }}</strong>! הנה סיכום הנתונים שלך.</p>
+    </div>
 </div>
+
+<div class="row g-4 mb-5">
+    <div class="col-md-4">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-body text-center py-4">
+                <div class="display-4 text-primary mb-2">
+                    <i class="bi bi-people-fill"></i>
+                </div>
+                <h1 class="display-5 fw-bold text-dark">{{ num_customers }}</h1>
+                <p class="text-muted mb-3">לקוחות רשומים</p>
+                <a href="{% url 'system_screen' %}" class="btn btn-primary btn-sm">
+                    <i class="bi bi-arrow-left-circle me-1"></i>נהל לקוחות
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-body text-center py-4">
+                <div class="display-4 text-success mb-2">
+                    <i class="bi bi-check-circle-fill"></i>
+                </div>
+                <h1 class="display-5 fw-bold text-dark">{{ active_subscriptions }}</h1>
+                <p class="text-muted mb-3">מנויים פעילים</p>
+                <a href="{% url 'system_screen' %}" class="btn btn-success btn-sm">
+                    <i class="bi bi-arrow-left-circle me-1"></i>צפה במנויים
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-body text-center py-4">
+                <div class="display-4 text-warning mb-2">
+                    <i class="bi bi-box-seam-fill"></i>
+                </div>
+                <h1 class="display-5 fw-bold text-dark">{{ packages_count }}</h1>
+                <p class="text-muted mb-3">חבילות זמינות</p>
+                <a href="{% url 'packages' %}" class="btn btn-warning btn-sm text-dark">
+                    <i class="bi bi-arrow-left-circle me-1"></i>צפה בחבילות
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-white border-bottom">
+                <h5 class="mb-0"><i class="bi bi-lightning-charge text-warning me-2"></i>פעולות מהירות</h5>
+            </div>
+            <div class="card-body">
+                <div class="d-grid gap-2">
+                    <a href="{% url 'system_screen' %}" class="btn btn-outline-primary">
+                        <i class="bi bi-person-plus me-2"></i>הוסף לקוח חדש
+                    </a>
+                    <a href="{% url 'packages' %}" class="btn btn-outline-success">
+                        <i class="bi bi-box-seam me-2"></i>הצג חבילות
+                    </a>
+                    <a href="{% url 'change_password' %}" class="btn btn-outline-secondary">
+                        <i class="bi bi-shield-lock me-2"></i>שנה סיסמה
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-white border-bottom">
+                <h5 class="mb-0"><i class="bi bi-info-circle text-info me-2"></i>אודות המערכת</h5>
+            </div>
+            <div class="card-body">
+                <p class="text-muted">Communication LTD היא מערכת לניהול לקוחות ומנויים לחברת תקשורת.</p>
+                <ul class="list-unstyled text-muted">
+                    <li><i class="bi bi-check2 text-success me-2"></i>ניהול לקוחות מלא</li>
+                    <li><i class="bi bi-check2 text-success me-2"></i>מעקב מנויים ותאריכי תפוגה</li>
+                    <li><i class="bi bi-check2 text-success me-2"></i>חבילות מגוונות לכל צורך</li>
+                    <li><i class="bi bi-check2 text-success me-2"></i>אבטחת מידע מתקדמת</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% else %}
+<!-- Hero section for logged-out users -->
+<div class="row align-items-center min-vh-50 py-5">
+    <div class="col-lg-6">
+        <h1 class="display-4 fw-bold text-primary mb-3">
+            <i class="bi bi-broadcast-pin me-2"></i>Communication LTD
+        </h1>
+        <p class="lead text-muted mb-4">
+            מערכת לניהול לקוחות ומנויים לחברת תקשורת. נהל את הלקוחות שלך, עקוב אחרי מנויים וחבילות — הכל במקום אחד.
+        </p>
+        <div class="d-flex gap-3 flex-wrap">
+            <a href="{% url 'login' %}" class="btn btn-primary btn-lg px-4">
+                <i class="bi bi-box-arrow-in-right me-2"></i>התחבר למערכת
+            </a>
+            <a href="{% url 'register' %}" class="btn btn-outline-primary btn-lg px-4">
+                <i class="bi bi-person-plus me-2"></i>הירשם עכשיו
+            </a>
+        </div>
+    </div>
+    <div class="col-lg-6 text-center mt-5 mt-lg-0">
+        <div class="row g-3">
+            <div class="col-6">
+                <div class="card border-0 shadow-sm p-3">
+                    <i class="bi bi-people-fill display-4 text-primary mb-2"></i>
+                    <p class="mb-0 fw-semibold">ניהול לקוחות</p>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="card border-0 shadow-sm p-3">
+                    <i class="bi bi-box-seam-fill display-4 text-warning mb-2"></i>
+                    <p class="mb-0 fw-semibold">חבילות מנוי</p>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="card border-0 shadow-sm p-3">
+                    <i class="bi bi-check-circle-fill display-4 text-success mb-2"></i>
+                    <p class="mb-0 fw-semibold">מנויים פעילים</p>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="card border-0 shadow-sm p-3">
+                    <i class="bi bi-shield-check-fill display-4 text-info mb-2"></i>
+                    <p class="mb-0 fw-semibold">אבטחת מידע</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
 {% endblock %}

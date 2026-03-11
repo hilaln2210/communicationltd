@@ -1,22 +1,123 @@
 {% extends 'base.html' %}
-{% load static %}
 
-{% block title %}System Screen{% endblock %}
+{% block title %}לקוחות — Communication LTD{% endblock %}
 
 {% block content %}
-<div class="container mt-4">
-    <h2>מסך מערכת</h2>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="btn btn-primary">הוסף לקוח</button>
-    </form>
-    <hr>
-    <h3>לקוחות</h3>
-    <ul>
-        {% for customer in customers %}
-            <li>{{ customer.name }} - {{ customer.phone }}</li>
-        {% endfor %}
-    </ul>
+<div class="row mb-4">
+    <div class="col">
+        <h2 class="mb-1">
+            <i class="bi bi-people text-primary me-2"></i>ניהול לקוחות
+        </h2>
+        <p class="text-muted">הוסף לקוחות חדשים ונהל מנויים.</p>
+    </div>
+</div>
+
+<div class="row">
+    <!-- Add customer form -->
+    <div class="col-lg-4 mb-4">
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0"><i class="bi bi-person-plus me-2"></i>הוסף לקוח חדש</h5>
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+                    {% for field in form %}
+                        <div class="mb-3">
+                            <label for="{{ field.id_for_label }}" class="form-label fw-semibold">{{ field.label }}</label>
+                            {{ field }}
+                            {% if field.errors %}
+                                <div class="text-danger small mt-1">
+                                    {% for error in field.errors %}{{ error }}{% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                    <button type="submit" class="btn btn-primary w-100">
+                        <i class="bi bi-plus-circle me-2"></i>הוסף לקוח
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Customers table -->
+    <div class="col-lg-8 mb-4">
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-white border-bottom d-flex justify-content-between align-items-center">
+                <h5 class="mb-0"><i class="bi bi-table me-2 text-primary"></i>רשימת לקוחות</h5>
+                <span class="badge bg-primary rounded-pill">{{ customers_with_subs|length }} לקוחות</span>
+            </div>
+            <div class="card-body p-0">
+                {% if customers_with_subs %}
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th><i class="bi bi-person me-1"></i>שם</th>
+                                <th><i class="bi bi-telephone me-1"></i>טלפון</th>
+                                <th><i class="bi bi-envelope me-1"></i>אימייל</th>
+                                <th><i class="bi bi-check-circle me-1"></i>מנוי פעיל</th>
+                                <th><i class="bi bi-gear me-1"></i>פעולות</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in customers_with_subs %}
+                            <tr>
+                                <td class="align-middle fw-semibold">{{ item.customer.name }}</td>
+                                <td class="align-middle">
+                                    <a href="tel:{{ item.customer.phone }}" class="text-decoration-none text-dark">
+                                        {{ item.customer.phone }}
+                                    </a>
+                                </td>
+                                <td class="align-middle">
+                                    {% if item.customer.email %}
+                                        <a href="mailto:{{ item.customer.email }}" class="text-decoration-none text-muted small">
+                                            {{ item.customer.email }}
+                                        </a>
+                                    {% else %}
+                                        <span class="text-muted small">—</span>
+                                    {% endif %}
+                                </td>
+                                <td class="align-middle">
+                                    {% if item.active_sub %}
+                                        <span class="badge bg-success">
+                                            <i class="bi bi-check-circle me-1"></i>{{ item.active_sub.package.name }}
+                                        </span>
+                                        <br>
+                                        <small class="text-muted">עד {{ item.active_sub.end_date }}</small>
+                                    {% else %}
+                                        <span class="badge bg-secondary">
+                                            <i class="bi bi-x-circle me-1"></i>אין מנוי
+                                        </span>
+                                    {% endif %}
+                                </td>
+                                <td class="align-middle">
+                                    <div class="d-flex gap-1 flex-wrap">
+                                        <a href="{% url 'packages' %}" class="btn btn-sm btn-outline-success" title="הרשם לחבילה">
+                                            <i class="bi bi-box-seam"></i>
+                                        </a>
+                                        <form method="post" action="{% url 'customer_delete' item.customer.pk %}" class="d-inline" onsubmit="return confirm('האם אתה בטוח שברצונך למחוק את הלקוח {{ item.customer.name }}?');">
+                                            {% csrf_token %}
+                                            <button type="submit" class="btn btn-sm btn-outline-danger" title="מחק לקוח">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <div class="text-center py-5 text-muted">
+                    <i class="bi bi-people display-3 d-block mb-3 opacity-25"></i>
+                    <p class="mb-0">אין לקוחות עדיין. הוסף לקוח ראשון!</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
 </div>
 {% endblock %}

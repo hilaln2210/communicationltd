@@ -10,4 +10,7 @@ urlpatterns = [
     path('reset-password/<str:token>/', views.reset_password, name='reset_password'),
     path('password-reset-done/', views.password_reset_done, name='password_reset_done'),
     path('system/', views.system_screen, name='system_screen'),
+    path('system/delete/<int:pk>/', views.customer_delete, name='customer_delete'),
+    path('packages/', views.packages_view, name='packages'),
+    path('subscribe/<int:customer_pk>/<int:package_pk>/', views.subscribe_customer, name='subscribe_customer'),
 ]

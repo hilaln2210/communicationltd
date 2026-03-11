@@ -1,21 +1,29 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.contrib.auth import get_user_model
+from django.utils import timezone
+
+
 class User(AbstractUser):
     email = models.EmailField(unique=True)
     password_reset_token = models.CharField(max_length=100, blank=True, null=True)
-
-
-
+    token_created_at = models.DateTimeField(blank=True, null=True)
 
 
 class Customer(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='customers')
     name = models.CharField(max_length=100)
     phone = models.CharField(max_length=20)
+    email = models.EmailField(blank=True, null=True)
 
     def __str__(self):
         return self.name
+
+    def active_subscription(self):
+        today = timezone.now().date()
+        return self.subscription_set.filter(end_date__gte=today).first()
+
+
 class Package(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField()
@@ -24,6 +32,7 @@ class Package(models.Model):
     def __str__(self):
         return self.name
 
+
 class Subscription(models.Model):
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
     package = models.ForeignKey(Package, on_delete=models.CASCADE)
@@ -31,4 +40,8 @@ class Subscription(models.Model):
     end_date = models.DateField()
 
     def __str__(self):
-        return f"{self.customer.user.username} - {self.package.name}"
+        return f"{self.customer.name} - {self.package.name}"
+
+    def is_active(self):
+        from django.utils import timezone
+        return self.end_date >= timezone.now().date()

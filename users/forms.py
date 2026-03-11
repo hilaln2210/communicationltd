@@ -8,8 +8,10 @@ from django.conf import settings
 
 User = get_user_model()
 
+
 class ForgotPasswordForm(forms.Form):
     email = forms.EmailField(label='כתובת אימייל')
+
 
 class UserRegistrationForm(UserCreationForm):
     email = forms.EmailField(required=True)
@@ -32,9 +34,11 @@ class UserRegistrationForm(UserCreationForm):
             raise ValidationError("הסיסמה חייבת להכיל לפחות תו מיוחד אחד.")
         return password
 
+
 class UserLoginForm(forms.Form):
     username = forms.CharField(label='שם משתמש')
     password = forms.CharField(label='סיסמה', widget=forms.PasswordInput)
+
 
 class CustomSetPasswordForm(SetPasswordForm):
     def clean_new_password1(self):
@@ -51,12 +55,21 @@ class CustomSetPasswordForm(SetPasswordForm):
             raise ValidationError("הסיסמה חייבת להכיל לפחות תו מיוחד אחד.")
         return password
 
-class CustomerForm(forms.ModelForm):
-    email = forms.EmailField()
 
+class CustomerForm(forms.ModelForm):
     class Meta:
         model = Customer
-        fields = ['name', 'phone']
+        fields = ['name', 'phone', 'email']
+        labels = {
+            'name': 'שם',
+            'phone': 'טלפון',
+            'email': 'אימייל',
+        }
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'שם הלקוח'}),
+            'phone': forms.TextInput(attrs={'class': 'form-control', 'placeholder': '05x-xxxxxxx'}),
+            'email': forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'example@email.com'}),
+        }
 
     def save(self, commit=True, user=None):
         instance = super().save(commit=False)

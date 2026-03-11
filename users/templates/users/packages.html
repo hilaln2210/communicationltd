@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+
+{% block title %}חבילות מנוי — Communication LTD{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col">
+        <h2 class="mb-1">
+            <i class="bi bi-box-seam text-primary me-2"></i>חבילות מנוי
+        </h2>
+        <p class="text-muted">בחר את החבילה המתאימה ללקוחותיך.</p>
+    </div>
+</div>
+
+<div class="row g-4">
+    {% for package in packages %}
+    <div class="col-md-4">
+        <div class="card border-0 shadow h-100 {% if forloop.counter == 3 %}border-warning{% endif %}">
+            {% if forloop.counter == 3 %}
+            <div class="card-header bg-warning text-dark text-center fw-bold">
+                <i class="bi bi-star-fill me-1"></i> הכי פופולרי
+            </div>
+            {% elif forloop.counter == 2 %}
+            <div class="card-header bg-primary text-white text-center fw-bold">
+                <i class="bi bi-lightning-fill me-1"></i> מומלץ
+            </div>
+            {% else %}
+            <div class="card-header bg-secondary text-white text-center fw-bold">
+                <i class="bi bi-box me-1"></i> מתאים לכל
+            </div>
+            {% endif %}
+            <div class="card-body text-center py-4">
+                <h3 class="card-title fw-bold mb-1">{{ package.name }}</h3>
+                <div class="display-5 fw-bold text-primary my-3">
+                    ₪{{ package.price }}
+                    <small class="fs-6 text-muted fw-normal">/חודש</small>
+                </div>
+                <p class="card-text text-muted mb-4">{{ package.description }}</p>
+                <hr>
+                <p class="text-muted small mb-3">בחר לקוח להרשמה:</p>
+                {% if customers %}
+                    <div class="dropdown">
+                        <button class="btn btn-primary dropdown-toggle w-100" type="button" data-bs-toggle="dropdown">
+                            <i class="bi bi-person-check me-1"></i>הרשם לחבילה
+                        </button>
+                        <ul class="dropdown-menu w-100">
+                            {% for c in customers %}
+                            <li>
+                                <form method="post" action="{% url 'subscribe_customer' c.pk package.pk %}">
+                                    {% csrf_token %}
+                                    <button type="submit" class="dropdown-item">
+                                        <i class="bi bi-person me-2"></i>{{ c.name }}
+                                    </button>
+                                </form>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                {% else %}
+                    <a href="{% url 'system_screen' %}" class="btn btn-outline-primary w-100">
+                        <i class="bi bi-person-plus me-1"></i>הוסף לקוח תחילה
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <div class="col-12 text-center py-5 text-muted">
+        <i class="bi bi-box display-3 d-block mb-3 opacity-25"></i>
+        <p>אין חבילות זמינות כרגע.</p>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
