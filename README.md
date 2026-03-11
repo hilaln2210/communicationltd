@@ -1,5 +1,7 @@
 # Communication LTD
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 אפליקציית Django לחברת תקשורת — ניהול לקוחות, מנויים, חבילות, ואימות משתמשים.
 
 ---
