@@ -2,11 +2,13 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
+Django web application for a telecom company — customer management, subscriptions, packages, and user authentication.
+
 אפליקציית Django לחברת תקשורת — ניהול לקוחות, מנויים, חבילות, ואימות משתמשים.
 
 ---
 
-## צילומי מסך
+## Screenshots
 
 ### דף בית — לא מחובר
 ![Home logged out](screenshots/home_logged_out.png)
@@ -31,19 +33,19 @@
 
 ---
 
-## תכונות
+## Features
 
-### ניהול לקוחות
+### Customer Management
 - **הוספת לקוח** — שם, טלפון, אימייל (נשמר למודל)
 - **מחיקת לקוח** — עם בדיקת בעלות (לא ניתן למחוק לקוח של משתמש אחר)
 - **טבלת לקוחות** — Bootstrap table עם שם, טלפון, אימייל, מנוי פעיל, ופעולות
 
-### חבילות ומנויים
+### Subscription Management
 - **3 חבילות מובנות** — בסיסי (₪50), מתקדם (₪100), פרמיום (₪150)
 - **הרשמה לחבילה** — ניתן להרשים לקוח לחבילה ישירות מדף החבילות
 - **מעקב מנויים** — תאריך התחלה ותפוגה, הצגת מנוי פעיל בטבלת הלקוחות
 
-### אימות ואבטחה
+### Security
 - **התחברות / הרשמה / התנתקות**
 - **שינוי סיסמה** — לוגין נדרש
 - **איפוס סיסמה** — באמצעות טוקן בתפוגת שעה אחת (תוקן חלון תפוגה!)
@@ -59,7 +61,7 @@
 
 ---
 
-## תיקוני באגים שבוצעו
+## Bug Fixes
 
 | בעיה | תיקון |
 |------|-------|
@@ -72,7 +74,7 @@
 
 ---
 
-## מבנה הפרויקט
+## Project Structure
 
 ```
 communication_ltd/    # הגדרות Django (settings, urls, wsgi)
@@ -97,7 +99,7 @@ manage.py
 
 ---
 
-## נתיבי URL
+## URL Routes
 
 | נתיב | תיאור | הרשאה |
 |------|-------|-------|
@@ -115,7 +117,7 @@ manage.py
 
 ---
 
-## הרצה
+## Getting Started
 
 ```bash
 # 1. צור סביבה וירטואלית
